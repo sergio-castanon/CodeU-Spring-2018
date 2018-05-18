@@ -21,13 +21,13 @@ String user = (String) request.getSession().getAttribute("user");
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Team 1's Chat App</title>
+  <title>Git Rekt's Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
   <nav>
-    <a id="navTitle" href="/">Team 1's Chat App</a>
+    <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(user != null){ %>
       <a>Hello <%= user %>!</a>
