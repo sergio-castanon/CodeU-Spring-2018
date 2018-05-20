@@ -32,7 +32,7 @@ public class AdminServlet extends HttpServlet {
                 request.getSession().setAttribute(ADMIN_MESSAGE, "You are not an admin!");
             }
         } else {
-            request.getSession().setAttribute(ADMIN_MESSAGE, "You are not logged in!");
+            response.sendRedirect("/login");
         }
 
         request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);

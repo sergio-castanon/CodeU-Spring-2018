@@ -47,7 +47,7 @@ public class AdminServletTest {
 
         adminServlet.doGet(mockRequest, mockResponse);
 
-        Mockito.verify(mockSession).setAttribute("admin_message", "You are not logged in!");
+        Mockito.verify(mockResponse).sendRedirect("/login");
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
