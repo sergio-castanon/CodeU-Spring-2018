@@ -13,8 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+<%@ page import="codeu.helper.AdminHelper"%>
+
 <%
-String[] admins = {"Cynthia", "Justin", "Sergio"};
 String user = (String) request.getSession().getAttribute("user");
 %>
 
@@ -35,12 +37,9 @@ String user = (String) request.getSession().getAttribute("user");
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <% for (String admin : admins) {
-        if (admin.equals(user)) { %>
-            <a href="/admin">Admin</a>
-    <%  }
-    }
-    %>
+    <% if (AdminHelper.isAdmin(user)) { %>
+        <a href="/admin">Admin</a>
+    <% } %>
   </nav>
 
   <div id="container">

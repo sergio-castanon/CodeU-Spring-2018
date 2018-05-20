@@ -1,5 +1,7 @@
 package codeu.controller;
 
+import codeu.helper.AdminHelper;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +21,13 @@ public class AdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String user = (String) request.getSession().getAttribute("user");
-        System.out.println("user: " + user);
 
         /* Note: the page should always have "Welcome to the admin page!" because I later edited the index.jsp page to
         only show the admin link if you are currently logged in as an admin. I (Justin) will refactor this code for
         the MVP.
         */
         if (user != null) {
-            if (isAdmin(user)) {
+            if (AdminHelper.isAdmin(user)) {
                 request.getSession().setAttribute(ADMIN_MESSAGE, "Hello " + user + "! Welcome to the admin page!");
             } else {
                 request.getSession().setAttribute(ADMIN_MESSAGE, "You are not an admin!");
@@ -39,18 +40,6 @@ public class AdminServlet extends HttpServlet {
         return;
     }
 
-    /**
-     * Determines whether or not the given username is an admin.
-     * @param user representing the user currently logged into the site (null if not logged in)
-     * @return boolean
-     */
-    public static boolean isAdmin(String user) {
-        String[] admins = {"Cynthia", "Justin", "Sergio"};
-        for (String admin : admins) {
-            if (user.equals(admin))
-                return true;
-        }
-        return false;
-    }
-
 }
+
+
