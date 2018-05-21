@@ -34,6 +34,7 @@ public class AdminServlet extends HttpServlet {
             }
         } else {
             response.sendRedirect("/login");
+            return;
         }
 
         request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
