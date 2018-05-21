@@ -35,20 +35,12 @@ public class AdminServletTest {
     }
 
     @Test
-    public void testDoGet() throws IOException, ServletException {
-        adminServlet.doGet(mockRequest, mockResponse);
-
-        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    }
-
-    @Test
     public void testDoGet_UserNotLoggedIn() throws IOException, ServletException {
         Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
 
         adminServlet.doGet(mockRequest, mockResponse);
 
         Mockito.verify(mockResponse).sendRedirect("/login");
-        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
     @Test
