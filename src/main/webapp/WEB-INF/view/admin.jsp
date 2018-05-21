@@ -13,6 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+<%@ page import="codeu.helper.AdminHelper"%>
+<%@ page import="codeu.model.store.basic.UserStore"%>
+<%@ page import="codeu.model.store.basic.MessageStore"%>
+<%@ page import="codeu.model.store.basic.ConversationStore"%>
+
+<%
+String user = (String) request.getSession().getAttribute("user");
+String message = (String) request.getSession().getAttribute("adminMessage");
+int numUsers = UserStore.getInstance().getNumUsers();
+int numMessages = MessageStore.getInstance().getNumMessages();
+int numConversations = ConversationStore.getInstance().getNumConversations();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +37,7 @@
   <nav>
     <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
-    <% if(request.getSession().getAttribute("user") != null){ %>
+    <% if(user != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
@@ -35,11 +48,26 @@
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-      <h1>Admin Page</h1>
-      <% String message = (String) request.getSession().getAttribute("admin_message"); %>
       <% if (message != null) { %>
         <p><%= message %></p>
       <% } %>
+
+      <% if (AdminHelper.isAdmin(user)) { %>
+
+          <h1>Administration</h1>
+          <hr />
+          <h2>Site Statistics</h2>
+
+          <p>Here are some site stats:</p>
+
+          <ul>
+            <li><b>Users: </b><%= numUsers %></li>
+            <li><b>Messages: </b><%= numMessages%></li>
+            <li><b>Conversations: </b><%= numConversations%></li>
+          </ul>
+
+      <% } %>
+
     </div>
   </div>
 </body>

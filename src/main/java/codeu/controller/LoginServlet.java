@@ -55,6 +55,17 @@ public class LoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+
+    String errorParameter = request.getParameter("error_message");
+    if (errorParameter != null) {
+      request.setAttribute("error", "You must log in before you can view the admin page!");
+    }
+
+    String redirectParameter = request.getParameter("post_login_redirect");
+    if (redirectParameter != null) {
+      request.getSession().setAttribute("postLoginRedirect", redirectParameter);
+    }
+
     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
   }
 
@@ -84,6 +95,13 @@ public class LoginServlet extends HttpServlet {
     }
 
     request.getSession().setAttribute("user", username);
-    response.sendRedirect("/conversations");
+
+    String redirect = (String) request.getSession().getAttribute("postLoginRedirect");
+    if (redirect != null) {
+      response.sendRedirect(redirect);
+    } else {
+      response.sendRedirect("/conversations");
+    }
+
   }
 }
