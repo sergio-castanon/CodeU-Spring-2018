@@ -35,31 +35,11 @@
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-
-      <h1>About the Code U Chat App </h1>
-      <p>
-        This is an example chat application designed to be a starting point
-        for your CodeU project team work. Here's some stuff to think about:
-        This chat application is a project under development by Team 1. Here
-        is some background on the developers and the site:
-      </p>
-
-      <ul>
-        <li><strong>Cynthia Serrano Najera:</strong> Is a student at Wellesley
-            College and studies Computer Science and Latinx Studies. She has an
-            interest in photography and comic books.</li>
-
-        <li><strong>Justin Mah:</strong> Is a student at the University of
-            Alberta and studies Computer Science. He also has an avid interest
-            in anime and studying Japanese.</li>
-
-        <li><strong>Sergio Castanon:</strong> Is a student at the Univeristy of
-            Utah. He is interested in cars, especially Japanese cars.</li>
-      </ul>
-
-      <p>
-        Look out for new information as we make changes this summer!
-      </p>
+      <h1>Admin Page</h1>
+      <% String message = (String) request.getSession().getAttribute("admin_message"); %>
+      <% if (message != null) { %>
+        <p><%= message %></p>
+      <% } %>
     </div>
   </div>
 </body>
