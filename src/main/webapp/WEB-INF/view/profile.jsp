@@ -37,7 +37,7 @@
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
       <% 
        String user = (String) request.getSession().getAttribute("user"); 
-       String profileOwner = (String) request.getAttribute("author"); 
+       String profileOwner = (String) request.getAttribute("profileName"); 
        boolean sameUser = (Boolean) request.getAttribute("userMatch");
       %>
        <h1><%= profileOwner %>'s Profile</h1>

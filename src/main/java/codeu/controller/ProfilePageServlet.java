@@ -29,7 +29,7 @@ public class ProfilePageServlet extends HttpServlet {
     		response.sendRedirect("/");
     	}
     	
-        request.setAttribute("author", profileName);
+        request.setAttribute("profileName", profileName);
         
         if (user == null || (user != null && !profileName.equals(user))) {
         	request.setAttribute("userMatch", false);
