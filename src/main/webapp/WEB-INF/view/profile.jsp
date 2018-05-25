@@ -39,11 +39,12 @@
        String user = (String) request.getSession().getAttribute("user"); 
        String author = (String) request.getAttribute("author"); 
        boolean match = (Boolean) request.getAttribute("userMatch");
-       if (match) { %> 
-        <h1><%= user %>'s Profile</h1>
-        <hr>
-        <h2>About Me</h2>
-        <p>Example of a description that could be displayed on a user's profile page. </p>
+      %>
+       <h1><%= author %>'s Profile</h1>
+       <hr>
+       <h2>About Me</h2>
+       <p>Example of a description that could be displayed on a user's profile page. </p>
+       <% if (match) { %> 
         <h3>Edit</h3>
         <hr>
         <form action="/profile/<%= author %>">
@@ -52,11 +53,6 @@
         	<br/>
         	<button type="submit">Submit</button>
         </form>
-      <% } else { %>
-      	<h1><%= author %>'s Profile</h1> 
-      	<hr>
-      	<h2>About Me</h2> 
-      	<p>Example of a description that could be displayed on a user's profile page.</p>
       <% } %>
         
     </div>

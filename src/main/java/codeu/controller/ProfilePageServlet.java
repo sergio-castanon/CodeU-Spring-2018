@@ -4,6 +4,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
+
 import java.io.IOException;
 
 /** Servlet class responsible for a user's profile page. */
@@ -16,13 +20,18 @@ public class ProfilePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String user = (String) request.getSession().getAttribute("user");
-    	String author = request.getRequestURI().substring("/profile/".length());
+    	String authorName = request.getRequestURI().substring("/profile/".length());
     	
-        if (author != null) {
-                request.setAttribute("author", author);
-            }
+    	User author = UserStore.getInstance().getUser(authorName);
+    	
+    	// user does not exist
+    	if (author == null) {
+    		response.sendRedirect("/");
+    	}
+    	
+        request.setAttribute("author", authorName);
         
-        if (user == null || (user != null && !author.equals(user))) {
+        if (user == null || (user != null && !authorName.equals(user))) {
         	request.setAttribute("userMatch", false);
         }
         else {
