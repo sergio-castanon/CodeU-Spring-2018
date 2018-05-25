@@ -37,17 +37,17 @@
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
       <% 
        String user = (String) request.getSession().getAttribute("user"); 
-       String author = (String) request.getAttribute("author"); 
-       boolean match = (Boolean) request.getAttribute("userMatch");
+       String profileOwner = (String) request.getAttribute("author"); 
+       boolean sameUser = (Boolean) request.getAttribute("userMatch");
       %>
-       <h1><%= author %>'s Profile</h1>
+       <h1><%= profileOwner %>'s Profile</h1>
        <hr>
        <h2>About Me</h2>
        <p>Example of a description that could be displayed on a user's profile page. </p>
-       <% if (match) { %> 
+       <% if (sameUser) { %> 
         <h3>Edit</h3>
         <hr>
-        <form action="/profile/<%= author %>">
+        <form action="/profile/<%= profileOwner %>">
         	<textarea cols="50" rows="5" name="description" 
         		placeholder="This is so that a user can edit their own profile."></textarea> 
         	<br/>

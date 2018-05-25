@@ -20,18 +20,18 @@ public class ProfilePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String user = (String) request.getSession().getAttribute("user");
-    	String authorName = request.getRequestURI().substring("/profile/".length());
+    	String profileName = request.getRequestURI().substring("/profile/".length());
     	
-    	User author = UserStore.getInstance().getUser(authorName);
+    	User profileOwner = UserStore.getInstance().getUser(profileName);
     	
     	// user does not exist
-    	if (author == null) {
+    	if (profileOwner == null) {
     		response.sendRedirect("/");
     	}
     	
-        request.setAttribute("author", authorName);
+        request.setAttribute("author", profileName);
         
-        if (user == null || (user != null && !authorName.equals(user))) {
+        if (user == null || (user != null && !profileName.equals(user))) {
         	request.setAttribute("userMatch", false);
         }
         else {
