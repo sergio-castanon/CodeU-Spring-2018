@@ -30,13 +30,6 @@ public class ProfilePageServlet extends HttpServlet {
     	}
     	
         request.setAttribute("profileName", profileName);
-        
-        if (user == null || (user != null && !profileName.equals(user))) {
-        	request.setAttribute("userMatch", false);
-        }
-        else {
-        	request.setAttribute("userMatch", true);
-        }
 
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
         return;

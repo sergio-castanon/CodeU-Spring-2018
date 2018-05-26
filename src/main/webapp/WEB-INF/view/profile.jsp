@@ -14,6 +14,7 @@
   limitations under the License.
 --%>
 <!DOCTYPE html>
+<%@page import="codeu.helper.ProfileHelper"%>
 <html>
 <head>
   <title>Git Rekt's Chat App</title>
@@ -38,13 +39,12 @@
       <% 
        String user = (String) request.getSession().getAttribute("user"); 
        String profileOwner = (String) request.getAttribute("profileName"); 
-       boolean sameUser = (Boolean) request.getAttribute("userMatch");
       %>
        <h1><%= profileOwner %>'s Profile</h1>
        <hr>
        <h2>About Me</h2>
        <p>Example of a description that could be displayed on a user's profile page. </p>
-       <% if (sameUser) { %> 
+       <% if (ProfileHelper.isSameUser(user, profileOwner)) { %> 
         <h3>Edit</h3>
         <hr>
         <form action="/profile/<%= profileOwner %>">

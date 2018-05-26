@@ -2,6 +2,8 @@ package codeu.controller;
 
 import java.io.IOException;
 
+
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +12,9 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import codeu.helper.ProfileHelper;
 
 /**
  * Testing class for the ProfilePageServlet
@@ -47,7 +50,9 @@ public class ProfilePageServletTest {
 		
 		profileServlet.doGet(mockRequest, mockResponse);
 		
-		Mockito.verify(mockRequest).setAttribute("userMatch", false);
+		Assert.assertFalse(ProfileHelper.isSameUser((String) mockSession.getAttribute("user"), 
+				mockRequest.getRequestURI().substring("/profile/".length())));
+		
 		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 	}
 	
@@ -58,7 +63,9 @@ public class ProfilePageServletTest {
 		
 		profileServlet.doGet(mockRequest, mockResponse);
 		
-		Mockito.verify(mockRequest).setAttribute("userMatch", true);
+		Assert.assertTrue(ProfileHelper.isSameUser((String) mockSession.getAttribute("user"), 
+				mockRequest.getRequestURI().substring("/profile/".length())));
+		
 		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 	}
 	
@@ -69,8 +76,19 @@ public class ProfilePageServletTest {
 		
 		profileServlet.doGet(mockRequest, mockResponse);
 		
-		Mockito.verify(mockRequest).setAttribute("userMatch", false);
+		Assert.assertFalse(ProfileHelper.isSameUser((String) mockSession.getAttribute("user"), 
+				mockRequest.getRequestURI().substring("/profile/".length())));
+		
 		Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+	}
+	
+	@Test
+	public void testDoGet_ProfileDoesNotExist() throws ServletException, IOException {
+		Mockito.when(mockRequest.getRequestURI()).thenReturn("/profile/userDoesNotExist");
+		
+		profileServlet.doGet(mockRequest, mockResponse);
+		
+		Mockito.verify(mockResponse).sendRedirect("/");
 	}
 	
 }
