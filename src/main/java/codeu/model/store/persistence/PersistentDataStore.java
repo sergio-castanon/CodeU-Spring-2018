@@ -176,11 +176,26 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
+  public void deleteAllUsers(List<User> users) {
+    for (User user : users) {
+      Key userKey = KeyFactory.createKey("chat-users", user.getId().toString());
+      datastore.delete(userKey);
+    }
+  }
+
+  public void deleteAllMessages(List<Message> messages) {
+    for (Message message : messages) {
+      Key messageKey = KeyFactory.createKey("chat-messages", message.getId().toString());
+      datastore.delete(messageKey);
+    }
+  }
+
   public void deleteAllConversations(List<Conversation> conversations) {
     for (Conversation conversation : conversations) {
       Key conversationKey = KeyFactory.createKey("chat-conversations", conversation.getId().toString());
       datastore.delete(conversationKey);
     }
   }
+
 }
 

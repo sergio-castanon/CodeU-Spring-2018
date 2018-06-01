@@ -131,5 +131,10 @@ public class UserStore {
     return users.size();
   }
 
+  public void deleteAllUsers() {
+    persistentStorageAgent.deleteAllUsers(users);
+    users.clear();
+  }
+
 }
 

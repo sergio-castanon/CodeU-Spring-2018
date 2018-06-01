@@ -94,4 +94,9 @@ public class MessageStore {
     return messages.size();
   }
 
+  public void deleteAllMessages() {
+    persistentStorageAgent.deleteAllMessages(messages);
+    messages.clear();
+  }
+
 }

@@ -1,7 +1,10 @@
 package codeu.controller;
 
 import codeu.helper.AdminHelper;
+import codeu.model.data.Message;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.UserStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +45,13 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("deleteConversationsButton") != null) {
+        if (request.getParameter("deleteUsersButton") != null) {
+            UserStore.getInstance().deleteAllUsers();
+        } else if (request.getParameter("deleteMessagesButton") != null) {
+            MessageStore.getInstance().deleteAllMessages();
+        }
+        else if (request.getParameter("deleteConversationsButton") != null) {
+            MessageStore.getInstance().deleteAllMessages();
             ConversationStore.getInstance().deleteAllConversations();
         }
 
