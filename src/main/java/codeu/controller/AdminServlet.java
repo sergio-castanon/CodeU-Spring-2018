@@ -1,7 +1,6 @@
 package codeu.controller;
 
 import codeu.helper.AdminHelper;
-import codeu.model.data.Message;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -47,6 +46,7 @@ public class AdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("deleteUsersButton") != null) {
             UserStore.getInstance().deleteAllUsers();
+            response.sendRedirect("/logout");
         } else if (request.getParameter("deleteMessagesButton") != null) {
             MessageStore.getInstance().deleteAllMessages();
         }
