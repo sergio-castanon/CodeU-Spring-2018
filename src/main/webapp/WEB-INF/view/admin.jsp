@@ -66,6 +66,11 @@ int numConversations = ConversationStore.getInstance().getNumConversations();
             <li><b>Conversations: </b><%= numConversations%></li>
           </ul>
 
+		  <form method="post" action="${pageContext.request.contextPath}/admin">
+			  <input type="submit" name="deleteConversationsButton" value="Delete Conversations" />
+
+		  </form>
+
       <% } %>
 
     </div>

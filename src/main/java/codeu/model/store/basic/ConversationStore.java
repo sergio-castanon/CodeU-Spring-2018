@@ -105,4 +105,9 @@ public class ConversationStore {
     return conversations.size();
   }
 
+  public void deleteAllConversations() {
+    persistentStorageAgent.deleteAllConversations(conversations);
+    conversations.clear();
+  }
+
 }

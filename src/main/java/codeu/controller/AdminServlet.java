@@ -1,6 +1,7 @@
 package codeu.controller;
 
 import codeu.helper.AdminHelper;
+import codeu.model.store.basic.ConversationStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,6 +40,15 @@ public class AdminServlet extends HttpServlet {
         return;
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("deleteConversationsButton") != null) {
+            ConversationStore.getInstance().deleteAllConversations();
+        }
+
+        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+        return;
+    }
 }
 
 
