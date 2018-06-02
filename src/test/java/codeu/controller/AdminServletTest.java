@@ -107,4 +107,55 @@ public class AdminServletTest {
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
+    @Test
+    public void testDoPost() throws IOException, ServletException {
+        adminServlet.doPost(mockRequest, mockResponse);
+        Assert.assertNull(mockRequest.getParameter("deleteUsersButton"));
+        Assert.assertNull(mockRequest.getParameter("deleteMessagesButton"));
+        Assert.assertNull(mockRequest.getParameter("deleteConversationsButton"));
+
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
+
+    @Test
+    public void testDoPost_DeleteUsers() throws ServletException, IOException {
+        Assert.assertEquals(12345, mockUserStore.getNumUsers());
+        Mockito.when(mockRequest.getParameter("deleteUsersButton")).thenReturn("notNull");
+
+        adminServlet.doPost(mockRequest, mockResponse);
+
+        mockUserStore.deleteAllUsers();
+        Mockito.verify(mockResponse).sendRedirect("/logout");
+        Assert.assertEquals(0, mockUserStore.getNumUsers());
+    }
+
+    @Test
+    public void testDoPost_DeleteMessages() throws ServletException, IOException {
+        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
+        Mockito.when(mockRequest.getParameter("deleteMessagesButton")).thenReturn("notNull");
+
+        adminServlet.doPost(mockRequest, mockResponse);
+
+        mockMessageStore.deleteAllMessages();
+        Assert.assertEquals(0, mockMessageStore.getNumMessages());
+
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
+
+    @Test
+    public void testDoPost_DeleteConversations() throws ServletException, IOException {
+        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
+        Assert.assertEquals(123, mockConversationStore.getNumConversations());
+        Mockito.when(mockRequest.getParameter("deleteConversationsButton")).thenReturn("notNull");
+
+        adminServlet.doPost(mockRequest, mockResponse);
+
+        mockMessageStore.deleteAllMessages();
+        mockConversationStore.deleteAllConversations();
+        Assert.assertEquals(0, mockMessageStore.getNumMessages());
+        Assert.assertEquals(0, mockConversationStore.getNumConversations());
+
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
+
 }
