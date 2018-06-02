@@ -119,13 +119,16 @@ public class AdminServletTest {
 
     @Test
     public void testDoPost_DeleteUsers() throws ServletException, IOException {
+        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
         Assert.assertEquals(12345, mockUserStore.getNumUsers());
         Mockito.when(mockRequest.getParameter("deleteUsersButton")).thenReturn("notNull");
 
         adminServlet.doPost(mockRequest, mockResponse);
 
+        mockMessageStore.deleteAllMessages();
         mockUserStore.deleteAllUsers();
         Mockito.verify(mockResponse).sendRedirect("/logout");
+        Assert.assertEquals(0, mockMessageStore.getNumMessages());
         Assert.assertEquals(0, mockUserStore.getNumUsers());
     }
 

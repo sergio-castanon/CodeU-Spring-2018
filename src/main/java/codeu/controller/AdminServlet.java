@@ -45,6 +45,7 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("deleteUsersButton") != null) {
+            MessageStore.getInstance().deleteAllMessages();
             UserStore.getInstance().deleteAllUsers();
             response.sendRedirect("/logout");
             return;
