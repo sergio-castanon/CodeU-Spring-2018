@@ -186,7 +186,6 @@ public class PersistentDataStore {
   public void deleteAllMessages(List<Message> messages) {
     for (Message message : messages) {
       Key messageKey = KeyFactory.createKey("chat-messages", message.getId().toString());
-      System.out.println("Deleting " + message.getContent());
       datastore.delete(messageKey);
     }
   }
