@@ -44,16 +44,20 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("deleteUsersButton") != null) {
-            MessageStore.getInstance().deleteAllMessages();
-            UserStore.getInstance().deleteAllUsers();
-            response.sendRedirect("/logout");
-            return;
-        } else if (request.getParameter("deleteMessagesButton") != null) {
-            MessageStore.getInstance().deleteAllMessages();
-        } else if (request.getParameter("deleteConversationsButton") != null) {
-            MessageStore.getInstance().deleteAllMessages();
-            ConversationStore.getInstance().deleteAllConversations();
+        String user = (String) request.getSession().getAttribute("user");
+
+        if (AdminHelper.isAdmin(user)) {
+            if (request.getParameter("deleteUsersButton") != null) {
+                MessageStore.getInstance().deleteAllMessages();
+                UserStore.getInstance().deleteAllUsers();
+                response.sendRedirect("/logout");
+                return;
+            } else if (request.getParameter("deleteMessagesButton") != null) {
+                MessageStore.getInstance().deleteAllMessages();
+            } else if (request.getParameter("deleteConversationsButton") != null) {
+                MessageStore.getInstance().deleteAllMessages();
+                ConversationStore.getInstance().deleteAllConversations();
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
