@@ -1,7 +1,6 @@
 package codeu.controller;
 
 import codeu.helper.AdminHelper;
-import codeu.model.data.Message;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /** Servlet class responsible for the admin page. */
 public class AdminServlet extends HttpServlet {
