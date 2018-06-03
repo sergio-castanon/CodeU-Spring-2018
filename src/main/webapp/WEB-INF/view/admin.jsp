@@ -46,8 +46,12 @@ int numConversations = ConversationStore.getInstance().getNumConversations();
 
     <a href="/about.jsp">About</a>
 
+    <% if (AdminHelper.isAdmin(user)) { %>
+      <a href="/admin">Admin</a>
+    <% } %>
+
     <% if (user != null) { %>
-        <a href="/logout">Logout</a>
+      <a href="/logout">Logout</a>
     <% } %>
 
   </nav>
