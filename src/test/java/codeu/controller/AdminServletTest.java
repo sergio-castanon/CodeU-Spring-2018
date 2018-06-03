@@ -7,7 +7,6 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentStorageAgent;
-import com.google.appengine.repackaged.org.apache.http.util.Asserts;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdminServletTest {
 
@@ -30,9 +28,11 @@ public class AdminServletTest {
     private HttpServletResponse mockResponse;
     private RequestDispatcher mockRequestDispatcher;
     private PersistentStorageAgent mockPersistentStorageAgent;
-    private ConversationStore mockConversationStore;
-    private MessageStore mockMessageStore;
-    private UserStore mockUserStore;
+    private ConversationStore fakeConversationStore;
+    private MessageStore fakeMessageStore;
+    private UserStore fakeUserStore;
+
+    private String adminUser = "Justin";
 
     @Before
     public void setup() {
@@ -49,26 +49,26 @@ public class AdminServletTest {
 
         mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
 
-        mockConversationStore = ConversationStore.getTestInstance(mockPersistentStorageAgent);
+        fakeConversationStore = ConversationStore.getTestInstance(mockPersistentStorageAgent);
         ArrayList<Conversation> testConversations = new ArrayList<>();
         for (int i = 0; i < 123; i++) {
             testConversations.add(null);
         }
-        mockConversationStore.setConversations(testConversations);
+        fakeConversationStore.setConversations(testConversations);
 
-        mockMessageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
+        fakeMessageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
         ArrayList<Message> testMessages = new ArrayList<>();
         for (int i = 0; i < 1234; i++) {
             testMessages.add(null);
         }
-        mockMessageStore.setMessages(testMessages);
+        fakeMessageStore.setMessages(testMessages);
 
-        mockUserStore = UserStore.getTestInstance(mockPersistentStorageAgent);
+        fakeUserStore = UserStore.getTestInstance(mockPersistentStorageAgent);
         ArrayList<User> testUsers = new ArrayList<>();
         for (int i = 0; i < 12345; i++) {
             testUsers.add(null);
         }
-        mockUserStore.setUsers(testUsers);
+        fakeUserStore.setUsers(testUsers);
 
     }
 
@@ -93,16 +93,16 @@ public class AdminServletTest {
 
     @Test
     public void testDoGet_UserIsAdmin() throws IOException, ServletException {
-        String admin = "Justin";
-        Mockito.when(mockSession.getAttribute("user")).thenReturn(admin);
+
+        Mockito.when(mockSession.getAttribute("user")).thenReturn(adminUser);
 
         adminServlet.doGet(mockRequest, mockResponse);
 
-        Mockito.verify(mockSession).setAttribute("adminMessage", "Hello " + admin + "! Welcome to the admin page!");
+        Mockito.verify(mockSession).setAttribute("adminMessage", "Hello " + adminUser + "! Welcome to the admin page!");
 
-        Assert.assertEquals(123, mockConversationStore.getNumConversations());
-        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
-        Assert.assertEquals(12345, mockUserStore.getNumUsers());
+        Assert.assertEquals(123, fakeConversationStore.getNumConversations());
+        Assert.assertEquals(1234, fakeMessageStore.getNumMessages());
+        Assert.assertEquals(12345, fakeUserStore.getNumUsers());
 
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
@@ -119,44 +119,50 @@ public class AdminServletTest {
 
     @Test
     public void testDoPost_DeleteUsers() throws ServletException, IOException {
-        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
-        Assert.assertEquals(12345, mockUserStore.getNumUsers());
+        Mockito.when(mockSession.getAttribute("user")).thenReturn(adminUser);
+
+        Assert.assertEquals(1234, fakeMessageStore.getNumMessages());
+        Assert.assertEquals(12345, fakeUserStore.getNumUsers());
         Mockito.when(mockRequest.getParameter("deleteUsersButton")).thenReturn("notNull");
 
         adminServlet.doPost(mockRequest, mockResponse);
 
-        mockMessageStore.deleteAllMessages();
-        mockUserStore.deleteAllUsers();
+        fakeMessageStore.deleteAllMessages();
+        fakeUserStore.deleteAllUsers();
         Mockito.verify(mockResponse).sendRedirect("/logout");
-        Assert.assertEquals(0, mockMessageStore.getNumMessages());
-        Assert.assertEquals(0, mockUserStore.getNumUsers());
+        Assert.assertEquals(0, fakeMessageStore.getNumMessages());
+        Assert.assertEquals(0, fakeUserStore.getNumUsers());
     }
 
     @Test
     public void testDoPost_DeleteMessages() throws ServletException, IOException {
-        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
+        Mockito.when(mockSession.getAttribute("user")).thenReturn(adminUser);
+
+        Assert.assertEquals(1234, fakeMessageStore.getNumMessages());
         Mockito.when(mockRequest.getParameter("deleteMessagesButton")).thenReturn("notNull");
 
         adminServlet.doPost(mockRequest, mockResponse);
 
-        mockMessageStore.deleteAllMessages();
-        Assert.assertEquals(0, mockMessageStore.getNumMessages());
+        fakeMessageStore.deleteAllMessages();
+        Assert.assertEquals(0, fakeMessageStore.getNumMessages());
 
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
 
     @Test
     public void testDoPost_DeleteConversations() throws ServletException, IOException {
-        Assert.assertEquals(1234, mockMessageStore.getNumMessages());
-        Assert.assertEquals(123, mockConversationStore.getNumConversations());
+        Mockito.when(mockSession.getAttribute("user")).thenReturn(adminUser);
+
+        Assert.assertEquals(1234, fakeMessageStore.getNumMessages());
+        Assert.assertEquals(123, fakeConversationStore.getNumConversations());
         Mockito.when(mockRequest.getParameter("deleteConversationsButton")).thenReturn("notNull");
 
         adminServlet.doPost(mockRequest, mockResponse);
 
-        mockMessageStore.deleteAllMessages();
-        mockConversationStore.deleteAllConversations();
-        Assert.assertEquals(0, mockMessageStore.getNumMessages());
-        Assert.assertEquals(0, mockConversationStore.getNumConversations());
+        fakeMessageStore.deleteAllMessages();
+        fakeConversationStore.deleteAllConversations();
+        Assert.assertEquals(0, fakeMessageStore.getNumMessages());
+        Assert.assertEquals(0, fakeConversationStore.getNumConversations());
 
         Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
     }
