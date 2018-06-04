@@ -15,6 +15,7 @@
 --%>
 <!DOCTYPE html>
 <%@page import="codeu.helper.ProfileHelper"%>
+<%@page import="codeu.model.store.basic.ProfileStore" %>
 <html>
 <head>
   <title>Git Rekt's Chat App</title>
@@ -43,13 +44,13 @@
        <h1><%= profileOwner %>'s Profile</h1>
        <hr>
        <h2>About Me</h2>
-       <p>Example of a description that could be displayed on a user's profile page. </p>
+       <p id="aboutMe"><%= ProfileStore.getInstance().getProfileText(profileOwner) %></p>
        <% if (ProfileHelper.isSameUser(user, profileOwner)) { %> 
         <h3>Edit</h3>
         <hr>
-        <form action="/profile/<%= profileOwner %>">
-        	<textarea cols="50" rows="5" name="description" 
-        		placeholder="This is so that a user can edit their own profile."></textarea> 
+        <form action="/profile/<%= profileOwner %>" method="POST">
+        	<textarea cols="50" rows="5" id="description" name="description" 
+        		placeholder="Edit your About Me section here."></textarea> 
         	<br/>
         	<button type="submit">Submit</button>
         </form>
