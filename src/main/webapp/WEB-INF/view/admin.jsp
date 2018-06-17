@@ -37,12 +37,23 @@ int numConversations = ConversationStore.getInstance().getNumConversations();
   <nav>
     <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
+
     <% if(user != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+
     <a href="/about.jsp">About</a>
+
+    <% if (AdminHelper.isAdmin(user)) { %>
+      <a href="/admin">Admin</a>
+    <% } %>
+
+    <% if (user != null) { %>
+      <a href="/logout">Logout</a>
+    <% } %>
+
   </nav>
 
   <div id="container">
@@ -65,6 +76,12 @@ int numConversations = ConversationStore.getInstance().getNumConversations();
             <li><b>Messages: </b><%= numMessages%></li>
             <li><b>Conversations: </b><%= numConversations%></li>
           </ul>
+
+		  <form method="post" action="${pageContext.request.contextPath}/admin">
+			  <input type="submit" name="deleteUsersButton" value="Delete All Users" />
+			  <input type="submit" name="deleteMessagesButton" value="Delete All Messages" />
+			  <input type="submit" name="deleteConversationsButton" value="Delete All Conversations" />
+		  </form>
 
       <% } %>
 

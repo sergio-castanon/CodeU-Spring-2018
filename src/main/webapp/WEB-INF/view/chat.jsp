@@ -17,7 +17,10 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.helper.AdminHelper"%>
+
 <%
+String user = (String) request.getSession().getAttribute("user");
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
 %>
@@ -49,12 +52,21 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <nav>
     <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+
+    <% if (user != null) { %>
+    <a>Hello <%= user %>!</a>
     <% } else { %>
       <a href="/login">Login</a>
     <% } %>
+
     <a href="/about.jsp">About</a>
+    <% if (AdminHelper.isAdmin(user)) { %>
+      <a href="/admin">Admin</a>
+    <% } %>
+
+    <% if (user != null) { %>
+      <a href="/logout?post_logout_redirect=/chat/<%= conversation.getTitle() %>">Logout</a>
+    <% } %>
   </nav>
 
   <div id="container">
@@ -80,7 +92,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <hr/>
 
-    <% if (request.getSession().getAttribute("user") != null) { %>
+    <% if (user != null) { %>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>

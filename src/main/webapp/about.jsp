@@ -13,6 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+<%@ page import="codeu.helper.AdminHelper"%>
+
+<%
+String user = (String) request.getSession().getAttribute("user");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +31,21 @@
   <nav>
     <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+
+    <% if(user != null){ %>
+      <a>Hello <%= user %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
     <a href="/about.jsp">About</a>
+
+    <% if (AdminHelper.isAdmin(user)) { %>
+      <a href="/admin">Admin</a>
+    <% } %>
+
+    <% if (user != null) { %>
+      <a href="/logout?post_logout_redirect=/about.jsp">Logout</a>
+    <% } %>
   </nav>
 
   <div id="container">

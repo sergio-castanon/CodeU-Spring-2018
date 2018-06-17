@@ -31,14 +31,21 @@ String user = (String) request.getSession().getAttribute("user");
   <nav>
     <a id="navTitle" href="/">Git Rekt's Chat App</a>
     <a href="/conversations">Conversations</a>
+
     <% if(user != null){ %>
       <a>Hello <%= user %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+
     <a href="/about.jsp">About</a>
+
     <% if (AdminHelper.isAdmin(user)) { %>
-        <a href="/admin">Admin</a>
+      <a href="/admin">Admin</a>
+    <% } %>
+
+    <% if (user != null) { %>
+      <a href="/logout">Logout</a>
     <% } %>
   </nav>
 
