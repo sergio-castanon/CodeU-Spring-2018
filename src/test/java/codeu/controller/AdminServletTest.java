@@ -31,10 +31,10 @@ public class AdminServletTest {
     private HttpSession mockSession;
     private HttpServletResponse mockResponse;
     private RequestDispatcher mockRequestDispatcher;
-    private PersistentStorageAgent mockPersistentStorageAgent;
     private ConversationStore fakeConversationStore;
     private MessageStore fakeMessageStore;
     private UserStore fakeUserStore;
+    private PersistentStorageAgent mockPersistentStorageAgent;
 
     private String adminUser = "Justin";
 
@@ -58,7 +58,6 @@ public class AdminServletTest {
             fakeConversationStore.addConversation(new Conversation(UUID.randomUUID(), UUID.randomUUID(),
                     "Conversation " + i, Instant.now()));
         }
-
         fakeMessageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
         for (int i = 0; i < 1234; i++) {
             fakeMessageStore.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
