@@ -18,11 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStoreException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -179,5 +175,26 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
-}
 
+  public void deleteAllUsers(List<User> users) {
+    for (User user : users) {
+      Key userKey = KeyFactory.createKey("chat-users", user.getId().toString());
+      datastore.delete(userKey);
+    }
+  }
+
+  public void deleteAllMessages(List<Message> messages) {
+    for (Message message : messages) {
+      Key messageKey = KeyFactory.createKey("chat-messages", message.getId().toString());
+      datastore.delete(messageKey);
+    }
+  }
+
+  public void deleteAllConversations(List<Conversation> conversations) {
+    for (Conversation conversation : conversations) {
+      Key conversationKey = KeyFactory.createKey("chat-conversations", conversation.getId().toString());
+      datastore.delete(conversationKey);
+    }
+  }
+
+}

@@ -64,7 +64,7 @@ public class ConversationStore {
     conversations = new ArrayList<>();
   }
 
-/** Access the current set of conversations known to the application. */
+  /** Access the current set of conversations known to the application. */
   public List<Conversation> getAllConversations() {
     return conversations;
   }
@@ -103,6 +103,11 @@ public class ConversationStore {
 
   public int getNumConversations() {
     return conversations.size();
+  }
+
+  public void deleteAllConversations() {
+    persistentStorageAgent.deleteAllConversations(conversations);
+    conversations.clear();
   }
 
 }
