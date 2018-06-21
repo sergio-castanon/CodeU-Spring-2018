@@ -2,12 +2,16 @@ package codeu.controller;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
+import codeu.model.data.Profile;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.ProfileStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
+
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -29,7 +33,10 @@ public class ServerStartupListener implements ServletContextListener {
       ConversationStore.getInstance().setConversations(conversations);
 
       List<Message> messages = PersistentStorageAgent.getInstance().loadMessages();
-      MessageStore.getInstance().setMessages(messages);
+      MessageStore.getInstance().setMessages(messages); 
+      
+      HashMap<String, String> profiles = PersistentStorageAgent.getInstance().loadProfiles();
+      ProfileStore.getInstance().setProfiles(profiles);
 
     } catch (PersistentDataStoreException e) {
       System.err.println("Server didn't start correctly. An error occurred during Datastore load!");

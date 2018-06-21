@@ -16,9 +16,14 @@ package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
+import codeu.model.data.Profile;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
+
+import java.util.HashMap;
 import java.util.List;
+
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
@@ -88,6 +93,17 @@ public class PersistentStorageAgent {
   public List<Message> loadMessages() throws PersistentDataStoreException {
     return persistentDataStore.loadMessages();
   }
+  
+  /**
+   * Gets all of the Profile objects from the Datastore service and returns them in a hash 
+   * table. 
+   * 
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   * 	Datastore service
+   */
+  public HashMap<String, String> loadProfiles() throws PersistentDataStoreException {
+	  return persistentDataStore.loadProfiles();
+  }
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
@@ -102,6 +118,11 @@ public class PersistentStorageAgent {
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
+  }
+  
+  /** Write a profile object to the Datastore service  */
+  public void writeThrough(Profile profile) {
+	  persistentDataStore.writeThrough(profile);
   }
 
   public void deleteAllUsers(List<User> users) {
