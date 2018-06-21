@@ -89,4 +89,18 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
+
+  public List<Message> getMessages() {
+    return messages;
+  }
+
+  public int getNumMessages() {
+    return messages.size();
+  }
+
+  public void deleteAllMessages() {
+    persistentStorageAgent.deleteAllMessages(messages);
+    messages.clear();
+  }
+
 }

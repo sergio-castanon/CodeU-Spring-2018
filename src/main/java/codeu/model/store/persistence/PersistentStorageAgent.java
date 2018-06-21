@@ -124,4 +124,17 @@ public class PersistentStorageAgent {
   public void writeThrough(Profile profile) {
 	  persistentDataStore.writeThrough(profile);
   }
+
+  public void deleteAllUsers(List<User> users) {
+    persistentDataStore.deleteAllUsers(users);
+  }
+
+  public void deleteAllMessages(List<Message> messages) {
+    persistentDataStore.deleteAllMessages(messages);
+  }
+
+  public void deleteAllConversations(List<Conversation> conversations) {
+    persistentDataStore.deleteAllConversations(conversations);
+  }
+
 }

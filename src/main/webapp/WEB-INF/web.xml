@@ -15,12 +15,12 @@
   limitations under the License.
 -->
 <web-app
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation=
-    "http://xmlns.jcp.org/xml/ns/javaee
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation=
+                "http://xmlns.jcp.org/xml/ns/javaee
      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-    version="3.1">
+        version="3.1">
 
   <listener>
     <listener-class>codeu.controller.ServerStartupListener</listener-class>
@@ -55,7 +55,7 @@
     <servlet-name>ChatServlet</servlet-name>
     <url-pattern>/chat/*</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>codeu.controller.RegisterServlet</servlet-class>
@@ -70,7 +70,7 @@
     <servlet-name>AdminServlet</servlet-name>
     <servlet-class>codeu.controller.AdminServlet</servlet-class>
   </servlet>
-  
+
   <servlet-mapping>
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/admin</url-pattern>
@@ -84,6 +84,16 @@
   <servlet-mapping>
   	<servlet-name>ProfilePageServlet</servlet-name>
   	<url-pattern>/profile/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>codeu.controller.LogoutServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
 </web-app>
