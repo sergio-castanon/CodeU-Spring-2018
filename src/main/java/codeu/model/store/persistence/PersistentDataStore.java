@@ -16,12 +16,14 @@ package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
+import codeu.model.data.Profile;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -144,6 +146,29 @@ public class PersistentDataStore {
 
     return messages;
   }
+  
+  /**
+	 * Loads all Profile objects from the Datastore service and returns them in a hash table 
+	 * 
+	 * @throws PersistentDataStoreException 
+	 * 				if an error is detected during the load from the Datastore service
+	 */
+	public HashMap<String, String> loadProfiles() throws PersistentDataStoreException {
+		HashMap<String, String> profiles = new HashMap<String, String>();
+		Query query = new Query("user-profiles");
+		PreparedQuery results = datastore.prepare(query);
+		try {
+			for (Entity entity : results.asIterable()) {
+				String profileOwner = (String) entity.getProperty("owner_name");
+				String text = (String) entity.getProperty("text");
+				profiles.put(profileOwner, text);
+			}
+		} catch (Exception e) {
+			throw new PersistentDataStoreException(e);
+		}
+
+		return profiles;
+	}
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
@@ -176,6 +201,27 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
+  /** Write a Profile object to the Datastore service. */
+	public void writeThrough(Profile profile) {
+		Query query = new Query("user-profiles");
+		PreparedQuery results = datastore.prepare(query);
+		for (Entity entity : results.asIterable()) {
+			if (profile.getProfileOwner().equals(entity.getProperty("owner_name"))) {
+				entity.removeProperty("text");
+				entity.setProperty("text", profile.getProfileText());
+
+				datastore.put(entity);
+				return;
+				//return new Profile(uuid, profileOwner, text);
+			}
+		}
+		Entity profileEntity = new Entity("user-profiles", profile.getId().toString());
+		profileEntity.setProperty("uuid", profile.getId().toString());
+		profileEntity.setProperty("owner_name", profile.getProfileOwner().toString());
+		profileEntity.setProperty("text", profile.getProfileText());
+		datastore.put(profileEntity);
+	}
+  
   public void deleteAllUsers(List<User> users) {
     for (User user : users) {
       Key userKey = KeyFactory.createKey("chat-users", user.getId().toString());

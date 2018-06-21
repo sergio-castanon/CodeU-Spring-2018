@@ -15,6 +15,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import codeu.model.data.User;
+import codeu.model.store.basic.ProfileStore;
 import codeu.model.store.basic.UserStore;
 
 public class RegisterServletTest {
@@ -60,6 +61,9 @@ public class RegisterServletTest {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
+    
+    ProfileStore mockProfileStore = Mockito.mock(ProfileStore.class);
+    registerServlet.setProfileStore(mockProfileStore);
 
     registerServlet.doPost(mockRequest, mockResponse);
 

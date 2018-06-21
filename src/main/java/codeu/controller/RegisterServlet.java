@@ -11,13 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import codeu.model.data.Profile;
 import codeu.model.data.User;
+import codeu.model.store.basic.ProfileStore;
 import codeu.model.store.basic.UserStore;
 
 public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+  
+  private ProfileStore profileStore;
 
   /**
    * Set up state for handling registration-related requests. This method is only called when
@@ -27,6 +31,8 @@ public class RegisterServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     setUserStore(UserStore.getInstance());
+    setProfileStore(ProfileStore.getInstance());
+    
   }
 
   /**
@@ -35,6 +41,10 @@ public class RegisterServlet extends HttpServlet {
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
+  }
+  
+  void setProfileStore(ProfileStore profileStore) {
+	  this.profileStore = profileStore;
   }
 
   @Override
@@ -63,10 +73,13 @@ public class RegisterServlet extends HttpServlet {
 
     String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
+    
     User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now());
     userStore.addUser(user);
-
+    
+    Profile profile = new Profile(UUID.randomUUID(), username, "Fill in your About Me section!");
+    profileStore.addProfile(profile);
+    
     response.sendRedirect("/login");
   }
 }
