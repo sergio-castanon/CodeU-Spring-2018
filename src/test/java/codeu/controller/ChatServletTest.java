@@ -182,7 +182,7 @@ public class ChatServletTest {
   }
 
   @Test
-  public void testDoPost_CleansHtmlContent() throws IOException, ServletException {
+  public void testDoPost_CleansInvalidHtmlContent() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
@@ -207,7 +207,7 @@ public class ChatServletTest {
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals(
-        "Contains html and  content.", messageArgumentCaptor.getValue().getContent());
+        "Contains html and JavaScript content.", messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
